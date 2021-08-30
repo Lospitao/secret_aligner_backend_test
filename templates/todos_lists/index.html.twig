@@ -1,0 +1,79 @@
+{% extends 'base.html.twig' %}
+{% block head %}
+
+    {% block title %}<title>Listados de tareas</title>{% endblock %}
+    <meta charset="UTF-8">
+    {% block stylesheets %}
+        {{ parent() }}
+        <!--CSS stylesheet-->
+        <link rel="stylesheet" type="text/css" href="{{ asset('css/todos_lists.css') }}">
+        <!--JS scripts-->
+        <script type="text/javascript" src="{{ asset('JS/updateCompletionStatus.js') }}"></script>
+    {% endblock %}
+
+{% endblock %}
+
+{% block body %}
+    <script>
+        $(document).ready(function(){
+            $('.datepicker').datepicker();
+        });
+    </script>
+    <div class="screen">
+        <!-- Insert Task Form -->
+        <section class="add_task_form card">
+            <div class="card-content">
+                <span class="card-title">Añadir tareas</span>
+                {{ form_start(form) }}
+                <div class="main_body registration_form">
+                    {{ form_row(form.name) }}
+                    {{ form_row(form.expires_at) }}
+                    <br><br>
+                    {{ form_row(form.submit) }}
+                    <br>
+                </div>
+                {{ form_end(form) }}
+            </div>
+        </section>
+            <!-- Todos Lists-->
+            <section class="todos_lists card">
+                <div class="card-content">
+                    <span class="card-title">Tareas</span>
+                    <table>
+                        <tr>
+                            <td style="font-weight: bolder">Nombre</td>
+                            <td style="font-weight: bolder">fecha creación</td>
+                            <td style="font-weight: bolder">fecha tope</td>
+                            <td style="font-weight: bolder">estado</td>
+                        </tr>
+                        {% for savedTodo in savedTodos%}
+                            <tr>
+                                {% if savedTodo['status']=="incomplete" %}
+                                    <td style="color: red">{{ savedTodo['name']}}</td>
+                                    <td style="color: red">{{ savedTodo['created_at']}}</td>
+                                    <td style="color: red">{{ savedTodo['expires_at']}}</td>
+                                    <td>
+                                            <label>
+                                                <input data-id="{{ savedTodo['id']}}"  type="checkbox" class="filled-in" />
+                                                <span>Marcar como completada</span>
+                                            </label>
+                                    </td>
+                                {% else %}
+                                    <td style="color: green">{{ savedTodo['name']}}</td>
+                                    <td style="color: green">{{ savedTodo['created_at']}}</td>
+                                    <td style="color: green">{{ savedTodo['expires_at']}}</td>
+                                    <td style="font-weight: bolder; color: green">
+                                        <label>
+                                            <input data-id="{{ savedTodo['id']}}"  type="checkbox" class="filled-in" checked="checked" />
+                                            <span>Marcar como incompleta</span>
+                                        </label>
+                                    </td>
+                                {% endif %}
+                            </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+            </section>
+        </div>
+
+{% endblock %}

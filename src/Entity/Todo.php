@@ -10,6 +10,8 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Todo
 {
+    const INCOMPLETE_STATUS = "incomplete";
+    const COMPLETE_STATUS = "complete";
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -28,7 +30,7 @@ class Todo
     private $created_at;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="date")
      */
     private $expires_at;
 
@@ -66,17 +68,22 @@ class Todo
         return $this;
     }
 
-    public function getExpiresAt(): ?\DateTimeInterface
+    /**
+     * @return mixed
+     */
+    public function getExpiresAt()
     {
         return $this->expires_at;
     }
 
-    public function setExpiresAt(\DateTimeInterface $expires_at): self
+    /**
+     * @param mixed $expires_at
+     */
+    public function setExpiresAt($expires_at): void
     {
         $this->expires_at = $expires_at;
-
-        return $this;
     }
+
 
     public function getStatus(): ?string
     {
