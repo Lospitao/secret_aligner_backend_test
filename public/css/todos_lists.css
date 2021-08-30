@@ -1,5 +1,5 @@
 body {
-    background-color: #85C7DE;
+    background-color: lightgrey;
 }
 
 /**
@@ -9,14 +9,15 @@ Add Task Form Component
     margin-top:300px;
     width: 700px;
     height: 300px;
-    background-color: #CFE8EF;
-
-    float: left;
+        float: left;
 }
 .card.add_task_form .card-content {
     padding-left: 50px;
-    padding-top: 50px;
+    padding-top: 30px;
     border:none;
+}
+.float-right {
+    text-align: right;
 }
 textarea#task_name  {
     width: 500px;
@@ -32,7 +33,6 @@ Todos Lists Component
 .card.todos_lists {
     width: 700px;
     height: 850px;
-    background-color: #C6DBF0;
     margin: 25px;
     float: left;
 }

@@ -1,3 +1,7 @@
+/********Base component*********/
+.nav-wrapper {
+    background-color: #8993be ;
+}
 .screen {
     width: 1500px;
     height: 900px;

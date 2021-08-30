@@ -27,13 +27,27 @@
     {% endblock %}
 </head>
 {% endblock %}
-
 <body>
-
 <div class="base">
-
+    <nav class="menu logged-user">
+        <div class="nav-wrapper">
+            {% if app.request.get('_route') == 'app_login' %}
+            <ul class="right hide-on-med-and-down">
+            </ul>
+            {% else %}
+                {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                    <ul class="right hide-on-med-and-down">
+                        <li><a class="waves-effect waves-light btn" href="{{ path('app_logout') }}">Salir</a></li>
+                    </ul>
+                {% else %}
+                    <ul class="right hide-on-med-and-down">
+                        <li><a class="waves-effect waves-light btn" href="{{ path('app_login') }}">Iniciar Sesión</a></li>
+                    </ul>
+                {% endif %}
+            {% endif %}
+        </div>
+    </nav>
 </div>
-
 {% for message in app.flashes('success') %}
     <div class="flash-success">
         {{ message }}
@@ -49,8 +63,6 @@
         {{ message }}
     </div>
 {% endfor %}
-
-
 {% block body %}
 
 {% endblock %}

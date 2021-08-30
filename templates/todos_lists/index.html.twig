@@ -23,13 +23,16 @@
         <!-- Insert Task Form -->
         <section class="add_task_form card">
             <div class="card-content">
-                <span class="card-title">Añadir tareas</span>
+                <span class="card-title">Añadir tarea</span>
                 {{ form_start(form) }}
                 <div class="main_body registration_form">
                     {{ form_row(form.name) }}
                     {{ form_row(form.expires_at) }}
-                    <br><br>
-                    {{ form_row(form.submit) }}
+                    <br>
+                    <div class="float-right">
+                        {{ form_row(form.submit) }}
+                    </div>
+
                     <br>
                 </div>
                 {{ form_end(form) }}
@@ -45,6 +48,7 @@
                             <td style="font-weight: bolder">fecha creación</td>
                             <td style="font-weight: bolder">fecha tope</td>
                             <td style="font-weight: bolder">estado</td>
+                            <td style="font-weight: bolder">actualizar estado</td>
                         </tr>
                         {% for savedTodo in savedTodos%}
                             <tr>
@@ -52,6 +56,7 @@
                                     <td style="color: red">{{ savedTodo['name']}}</td>
                                     <td style="color: red">{{ savedTodo['created_at']}}</td>
                                     <td style="color: red">{{ savedTodo['expires_at']}}</td>
+                                    <td style="color: red">{{ savedTodo['status']}}</td>
                                     <td>
                                             <label>
                                                 <input data-id="{{ savedTodo['id']}}"  type="checkbox" class="filled-in" />
@@ -62,6 +67,7 @@
                                     <td style="color: green">{{ savedTodo['name']}}</td>
                                     <td style="color: green">{{ savedTodo['created_at']}}</td>
                                     <td style="color: green">{{ savedTodo['expires_at']}}</td>
+                                    <td style="color: green">{{ savedTodo['status']}}</td>
                                     <td style="font-weight: bolder; color: green">
                                         <label>
                                             <input data-id="{{ savedTodo['id']}}"  type="checkbox" class="filled-in" checked="checked" />

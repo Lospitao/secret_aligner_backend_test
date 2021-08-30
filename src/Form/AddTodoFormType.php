@@ -18,7 +18,7 @@ class AddTodoFormType extends AbstractType
         $builder
             ->add('name', TextType::class, ['label' => 'Nombre de la tarea'])
             ->add('expires_at', null, [
-                'label' => 'Selecciona una fecha',
+                'label' => 'Fecha tope',
                 'widget' => 'single_text',
                 'placeholder' => [
                     'year' => 'Year', 'month' => 'Month', 'day' => 'Day',]
@@ -27,7 +27,7 @@ class AddTodoFormType extends AbstractType
                 'attr' => [
                     'class' => 'btn btn-success float-right'
                 ],
-                'label' => 'Registrar tarea'
+                'label' => 'Añadir tarea'
             ])
         ;
     }
