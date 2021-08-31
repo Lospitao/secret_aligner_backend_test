@@ -39,6 +39,12 @@ class Todo
      */
     private $status;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=TodosList::class, inversedBy="todos")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $List;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -93,6 +99,18 @@ class Todo
     public function setStatus(string $status): self
     {
         $this->status = $status;
+
+        return $this;
+    }
+
+    public function getList(): ?TodosList
+    {
+        return $this->List;
+    }
+
+    public function setList(?TodosList $List): self
+    {
+        $this->List = $List;
 
         return $this;
     }

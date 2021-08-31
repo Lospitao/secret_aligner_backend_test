@@ -1,6 +1,5 @@
 
 function updateCompletionStatus(todoId, updateCompletionStatusWebService) {
-console.log(todoId);
     $.ajax({
 
         url : updateCompletionStatusWebService,
@@ -10,7 +9,7 @@ console.log(todoId);
         type : 'PATCH',
         dataType : 'json',
         success: function (data) {
-            location.reload()
+
             console.log('Submission was successful.');
         },
         error: function (data) {

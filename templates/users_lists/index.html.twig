@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+{% block head %}
+    {% block title %}<title>Listados Listas de usuarios</title>{% endblock %}
+<meta charset="UTF-8">
+{% block stylesheets %}
+        {{ parent() }}
+    <!--CSS stylesheet-->
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/userslists.css') }}">
+    <!--JS scripts-->
+    <script type="text/javascript" src="{{ asset('JS/updateListUser.js') }}"></script>
+{% endblock %}
+
+{% endblock %}
+{% block body %}
+    <div class="screen">
+        <!-- Lists Users-->
+        <section class="user_lists card">
+            <div class="card-content">
+                <span class="card-title">Listas y Usuarios</span>
+                <table>
+                    <tr>
+                        <td style="font-weight: bolder">Usuarios</td>
+                        <td style="font-weight: bolder">Listas</td>
+                    </tr>
+                    {% for data in userListsData%}
+                        <tr>
+                            <td >{{ data['listUserEmail']}}</td>
+                            <td >{{ data['listName']}}</td>
+                            <td>
+                                <label for="new_user"></label>
+                                <textarea data-id="{{ data['listUserId']}}" placeholder="Escribe aquí el email del nuevo usuario" name="new_user" id="new_user" cols="10" rows="10"></textarea><br>
+                                <a data-id="{{ data['listId']}}" class="update_user waves-effect waves-light btn">Asignar lista a otro usuario</a></td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </section>
+    </div>
+{% endblock %}

@@ -1,32 +1,44 @@
 <?php
 namespace App\Domain\Services;
 use App\Entity\Todo;
+use App\Entity\TodosList;
+
 class getTodosService
 {
     private $todo;
     private $savedTodosData;
-    public function __construct($entityManager)
+    private $userId;
+    public function __construct($entityManager, $userId)
     {
         $this->entityManager = $entityManager;
+        $this->userId = $userId;
     }
     public function execute ()
     {
         try {
-            $todos = $this->getAllTodos();
-            foreach($todos as $this->todo) {
-                $this->savedTodosData = $this->getSavedTodosData();
+            $userLists = $this->getUserLists();
+            foreach ($userLists as $list) {
+                $todos = $this->getAllTodos($list);
+                foreach($todos as $this->todo) {
+                    $this->savedTodosData = $this->getSavedTodosData();
+                }
             }
             return $this->savedTodosData;
         } catch (\Exception $exception) {
             return $this->createErrorMessage($exception);
         }
     }
-
-    private function getAllTodos()
+    private function getUserLists()
+    {
+        return $this->entityManager
+            ->getRepository(TodosList::class)
+            ->findBy(['userId'=> $this->userId]);
+    }
+    private function getAllTodos($list)
     {
         return $this->entityManager
             ->getRepository(Todo::class)
-            ->findAll();
+            ->findBy(['List'=> $list]);
     }
 
     private function getSavedTodosData()

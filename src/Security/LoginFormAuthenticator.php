@@ -2,6 +2,8 @@
 
 namespace App\Security;
 
+use App\Entity\User;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -21,23 +23,27 @@ class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
     use TargetPathTrait;
 
     public const LOGIN_ROUTE = 'app_login';
+    public const LISTS_USERS = 'users_lists';
     public const TODOS_ROUTE = 'todos';
-
+    private $user;
+    private $email;
     private UrlGeneratorInterface $urlGenerator;
+    private EntityManagerInterface $entityManager;
 
-    public function __construct(UrlGeneratorInterface $urlGenerator)
+    public function __construct(UrlGeneratorInterface $urlGenerator, EntityManagerInterface $entityManager)
     {
         $this->urlGenerator = $urlGenerator;
+        $this->entityManager = $entityManager;
     }
 
     public function authenticate(Request $request): PassportInterface
     {
-        $email = $request->request->get('email', '');
+        $this->email = $request->request->get('email', '');
 
-        $request->getSession()->set(Security::LAST_USERNAME, $email);
+        $request->getSession()->set(Security::LAST_USERNAME, $this->email);
 
         return new Passport(
-            new UserBadge($email),
+            new UserBadge($this->email),
             new PasswordCredentials($request->request->get('password', '')),
             [
                 new CsrfTokenBadge('authenticate', $request->get('_csrf_token')),
@@ -50,7 +56,10 @@ class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
         if ($targetPath = $this->getTargetPath($request->getSession(), $firewallName)) {
             return new RedirectResponse($targetPath);
         }
-
+        $this->user = $this->getUser();
+        if ($this->isUserAnAdmin()) {
+            return new RedirectResponse($this->urlGenerator->generate(self::LISTS_USERS));
+        }
 
         return new RedirectResponse($this->urlGenerator->generate(self::TODOS_ROUTE));
 
@@ -59,5 +68,15 @@ class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
     protected function getLoginUrl(Request $request): string
     {
         return $this->urlGenerator->generate(self::LOGIN_ROUTE);
+    }
+
+    private function isUserAnAdmin()
+    {
+        return in_array("ROLE_ADMIN", $this->user->getRoles());
+    }
+
+    private function getUser()
+    {
+        return $this->entityManager->getRepository(User::class)->findOneBy(['email' => $this->email]);
     }
 }

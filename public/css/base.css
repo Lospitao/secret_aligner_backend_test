@@ -1,6 +1,6 @@
 /********Base component*********/
 .nav-wrapper {
-    background-color: #8993be ;
+    background-color: #B2EEE0;
 }
 .screen {
     width: 1500px;
@@ -27,7 +27,7 @@
     border-radius: 10px;
 }
 .flash-error {
-    margin-top: 30px;
+    margin-top: 100px;
     margin-bottom: 20px;
     padding-top: 5px;
     padding-bottom: 5px;

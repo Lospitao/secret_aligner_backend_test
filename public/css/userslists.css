@@ -1,0 +1,14 @@
+.screen {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-items: center;
+    align-content: center;
+}
+.card.user_lists {
+    margin-top: 100px;
+    width: 1000px;
+}
+#new_user {
+    width: 200px;
+}

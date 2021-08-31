@@ -26,7 +26,10 @@ class SecurityController extends AbstractController
 
         return $this->render('security/login.html.twig', ['last_username' => $lastUsername, 'error' => $error]);
     }
-
+    private function isUserAlreadyLoggedIn()
+    {
+        return $this->getUser();
+    }
     /**
      * @Route("/logout", name="app_logout")
      */
@@ -35,8 +38,5 @@ class SecurityController extends AbstractController
         return $this->redirectToRoute('app_login');
     }
 
-    private function isUserAlreadyLoggedIn()
-    {
-        return $this->getUser();
-    }
+
 }

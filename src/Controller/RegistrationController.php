@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\TodosList;
 use App\Entity\User;
 use App\Entity\UserRole;
 use App\Form\RegistrationFormType;
@@ -16,6 +17,7 @@ class RegistrationController extends AbstractController
     private $user;
     private $form;
     private $userRole;
+    private $newList;
 
     /**
      * @Route("/register", name="app_register")
@@ -33,6 +35,7 @@ class RegistrationController extends AbstractController
                 $this->setUserGenericRole();
                 $this->setUserPassword($passwordEncoder);
                 $this->saveNewUser();
+                $this->createNewUserList();
                 $this->createSuccessfullyRegisteredNewUser();
             }
             return $this->render('registration/register.html.twig', [
@@ -92,6 +95,42 @@ class RegistrationController extends AbstractController
     {
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->persist($this->user);
+        $entityManager->flush();
+    }
+
+    private function createNewUserList()
+    {
+        $this->createNewList();
+        $listName = $this->createListName();
+        $this->setListName($listName);
+        $this->setUserId();
+        $this->saveNewUserList();
+    }
+
+    private function createNewList()
+    {
+        $this->newList = new TodosList();
+    }
+
+    private function createListName()
+    {
+        $email = explode("@", $this->user->getEmail())[0];
+        return $email[0];
+    }
+
+    private function setListName($listName)
+    {
+
+        $this->newList->setName($listName . "_list");
+    }
+    private function setUserId()
+    {
+        $this->newList->setUserId($this->user->getId());
+    }
+    private function saveNewUserList()
+    {
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->persist($this->newList);
         $entityManager->flush();
     }
 

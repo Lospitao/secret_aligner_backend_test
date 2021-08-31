@@ -35,16 +35,21 @@
             <ul class="right hide-on-med-and-down">
             </ul>
             {% else %}
-                {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-                    <ul class="right hide-on-med-and-down">
-                        <li><a class="waves-effect waves-light btn" href="{{ path('app_logout') }}">Salir</a></li>
-                    </ul>
-                {% else %}
-                    <ul class="right hide-on-med-and-down">
-                        <li><a class="waves-effect waves-light btn" href="{{ path('app_login') }}">Iniciar Sesión</a></li>
-                    </ul>
-                {% endif %}
-            {% endif %}
+                    {% if app.request.get('_route') == 'users_lists' %}
+                        <ul class="right hide-on-med-and-down">
+                            <li><a class="waves-effect waves-light btn" href="{{ path('app_register') }}">Crear Nuevo Usuario</a></li>
+                        </ul>
+                        {% endif %}
+                    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                        <ul class="right hide-on-med-and-down">
+                            <li><a class="waves-effect waves-light btn" href="{{ path('app_logout') }}">Salir</a></li>
+                        </ul>
+                    {% else %}
+                        <ul class="right hide-on-med-and-down">
+                            <li><a class="waves-effect waves-light btn" href="{{ path('app_login') }}">Iniciar Sesión</a></li>
+                        </ul>
+                    {% endif %}
+                    {% endif %}
         </div>
     </nav>
 </div>

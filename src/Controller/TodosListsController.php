@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Todo;
+use App\Entity\TodosList;
 use App\Form\AddTodoFormType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -22,7 +23,7 @@ class TodosListsController extends AbstractController
         $this->entityManager = $entityManager;
     }
     /**
-     * @Route("/list/todos", name="todos")
+     * @Route("/lists/todos", name="todos")
      */
     public function index(Request $request): Response
     {
@@ -33,7 +34,9 @@ class TodosListsController extends AbstractController
                 $this->createNewTodoService($request);
                 $this->createSuccessfullyCreatedTodoMessage();
             }
-            $savedTodos = new GetTodosService($this->entityManager);
+            $userId= $this->getUser()->getId();
+
+            $savedTodos = new GetTodosService($this->entityManager, $userId);
             return $this->render('todos_lists/index.html.twig', [
                 'form' => $this->form->createView(),
                 'savedTodos' => $savedTodos->execute()
@@ -66,6 +69,8 @@ class TodosListsController extends AbstractController
         $this->setTodoCreationDate();
         $this->setTodoExpirationDate();
         $this->setTodoStatus();
+        $todoList = $this->getTodoList();
+        $this->setTodoList($todoList);
         $this->saveNewTodo();
     }
     private function createNewTodo()
@@ -88,6 +93,17 @@ class TodosListsController extends AbstractController
     {
         $this->todo->setStatus(TODO::INCOMPLETE_STATUS);
     }
+    private function getTodoList()
+    {
+        $email = explode("@", $this->getUser()->getEmail());
+        return $this->getDoctrine()
+            ->getRepository(TodosList::class)
+            ->findOneBy(['name'=> $email[0]."_list"]);
+    }
+    private function setTodoList($todoList)
+    {
+        $this->todo->setList($todoList);
+    }
     private function saveNewTodo()
     {
         $entityManager = $this->getDoctrine()->getManager();
@@ -99,4 +115,5 @@ class TodosListsController extends AbstractController
     {
         $this->addFlash('success', 'Se ha añadido una nueva tarea');
     }
+
 }
