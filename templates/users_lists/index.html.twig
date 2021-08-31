@@ -25,7 +25,7 @@
                     {% for data in userListsData%}
                         <tr>
                             <td >{{ data['listUserEmail']}}</td>
-                            <td >{{ data['listName']}}</td>
+                            <td><a data-id="{{ data['listId']}}" href="{{ path('list_todos', {'listId': data['listId'] }) }}">{{ data['listName']}}</a></td>
                             <td>
                                 <label for="new_user"></label>
                                 <textarea data-id="{{ data['listUserId']}}" placeholder="Escribe aquí el email del nuevo usuario" name="new_user" id="new_user" cols="10" rows="10"></textarea><br>

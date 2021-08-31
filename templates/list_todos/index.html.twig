@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+{% block head %}
+    {% block title %}<title>Todos de la lista</title>{% endblock %}
+    <meta charset="UTF-8">
+    {% block stylesheets %}
+        {{ parent() }}
+    {% endblock %}
+{% endblock %}
+{% block body %}
+    <div class="screen">
+        <!-- List Todos-->
+        </section>
+        <!-- Todos Lists-->
+        <section class="todos_lists card">
+            <div class="card-content">
+                <span class="card-title">Tareas</span>
+                <table>
+                    <tr>
+                        <td style="font-weight: bolder">Nombre</td>
+                        <td style="font-weight: bolder">fecha creación</td>
+                        <td style="font-weight: bolder">fecha tope</td>
+                        <td style="font-weight: bolder">estado</td>
+
+                    </tr>
+                    {% for savedTodo in savedTodos%}
+                        <tr>
+                            {% if savedTodo['status']=="incomplete" %}
+                                <td style="color: red">{{ savedTodo['name']}}</td>
+                                <td style="color: red">{{ savedTodo['created_at']}}</td>
+                                <td style="color: red">{{ savedTodo['expires_at']}}</td>
+                                <td style="color: red">{{ savedTodo['status']}}</td>
+                                <td style="color: red">incomplete</td>
+
+                            {% else %}
+                                <td style="color: green">{{ savedTodo['name']}}</td>
+                                <td style="color: green">{{ savedTodo['created_at']}}</td>
+                                <td style="color: green">{{ savedTodo['expires_at']}}</td>
+                                <td style="color: green">{{ savedTodo['status']}}</td>
+                                <td style="color: green">complete</td>
+
+                            {% endif %}
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </section>
+    </div>
+{% endblock %}

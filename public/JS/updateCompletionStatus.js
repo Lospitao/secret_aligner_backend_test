@@ -6,10 +6,10 @@ function updateCompletionStatus(todoId, updateCompletionStatusWebService) {
         data : {
             'todoId' : todoId,
         },
-        type : 'PATCH',
+        type : 'POST',
         dataType : 'json',
         success: function (data) {
-
+            location.reload();
             console.log('Submission was successful.');
         },
         error: function (data) {

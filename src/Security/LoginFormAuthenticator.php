@@ -24,7 +24,7 @@ class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
 
     public const LOGIN_ROUTE = 'app_login';
     public const LISTS_USERS = 'users_lists';
-    public const TODOS_ROUTE = 'todos';
+    public const USER_TODOS = 'user_todos';
     private $user;
     private $email;
     private UrlGeneratorInterface $urlGenerator;
@@ -60,8 +60,8 @@ class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
         if ($this->isUserAnAdmin()) {
             return new RedirectResponse($this->urlGenerator->generate(self::LISTS_USERS));
         }
-
-        return new RedirectResponse($this->urlGenerator->generate(self::TODOS_ROUTE));
+        $userId = $this->user->getId();
+        return new RedirectResponse($this->urlGenerator->generate(self::USER_TODOS, ['userId' =>$userId]));
 
     }
 

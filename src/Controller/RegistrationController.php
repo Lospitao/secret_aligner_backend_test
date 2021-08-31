@@ -114,7 +114,7 @@ class RegistrationController extends AbstractController
 
     private function createListName()
     {
-        $email = explode("@", $this->user->getEmail())[0];
+        $email = explode("@", $this->user->getEmail());
         return $email[0];
     }
 

@@ -6,17 +6,20 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class SecurityController extends AbstractController
 {
+    public const USER_TODOS = 'user_todos';
     /**
      * @Route("/login", name="app_login")
      */
-    public function login(AuthenticationUtils $authenticationUtils): Response
+    public function login(UrlGeneratorInterface $urlGenerator, AuthenticationUtils $authenticationUtils): Response
     {
         if ($this->isUserAlreadyLoggedIn()) {
-            return $this->redirectToRoute('todos');
+            $userId = $this->getUser()->getId();
+            return new RedirectResponse($urlGenerator->generate(self::USER_TODOS, ['userId' =>$userId]));
         }
 
         // get the login error if there is one
@@ -35,7 +38,8 @@ class SecurityController extends AbstractController
      */
     public function logout()
     {
-        return $this->redirectToRoute('app_login');
+
+        $this->redirectToRoute('app_login');
     }
 
 
